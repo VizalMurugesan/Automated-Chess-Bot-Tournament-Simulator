@@ -1,4 +1,5 @@
 //(RangerD, 2025)
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ public class ChessBoard2D
 {
     public int width;
     public int height;
-    public ChessBoardSquare[,] squares;
+    ChessBoardSquare[,] squares;
 
     public ChessBoard2D(int width, int height)
     {
@@ -64,6 +65,11 @@ public class ChessBoard2D
         return closest;
     }
 
+    public ChessBoardSquare[,] GetAllSquares()
+    {
+        return squares;
+    }
+
     // Optional helper: clear highlights
     public void ClearHighlights()
     {
@@ -104,13 +110,30 @@ public class ChessBoard2D
         for (int x = 0; x < Manager.Instance.tileManager.BoardWidth; x++)
         {
             if (x != startX)
-                movable.Add(squares[x, startY]);
+            {
+                ChessBoardSquare squareInConsideration = squares[x, startY];
+                if (squareInConsideration.IsOccupied)
+                {
+                    movable.Add(squareInConsideration);
+                    break;
+                }
+                
+            }
+                
         }
         for (int y = 0; y < Manager.Instance.tileManager.BoardHeight; y++)
         {
             if (y != startY)
-                movable.Add(squares[startX, y]);
+            {
+                ChessBoardSquare squareInConsideration = squares[y, startX];
+                if (squareInConsideration.IsOccupied)
+                {
+                    movable.Add(squareInConsideration);
+                    break;
+                }
+            }
         }
+            
 
         return movable;
     }

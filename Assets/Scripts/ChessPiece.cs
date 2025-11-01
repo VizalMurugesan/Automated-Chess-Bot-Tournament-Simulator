@@ -34,7 +34,7 @@ public class ChessPiece : MonoBehaviour
     {
         Initialize(pieceType, pieceColor);
         if (chessBoard == null)
-            chessBoard = FindFirstObjectByType<ChessTileManager>()?.ChessBoard;
+            //chessBoard = FindFirstObjectByType<ChessTileManager>()?.ChessBoard;
         if (chessBoard != null)
             DefaultSquare = chessBoard.GetClosestSquare(transform.position);
     }

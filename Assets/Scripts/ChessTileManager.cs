@@ -1,5 +1,6 @@
 //(RangerD, 2025)
 using UnityEngine;
+using System;
 using UnityEngine.Tilemaps;
 
 public class ChessTileManager : MonoBehaviour
@@ -16,7 +17,7 @@ public class ChessTileManager : MonoBehaviour
     public TileBase WhiteTile;
     public TileBase BlackTile;
 
-    public ChessBoard2D ChessBoard {  get; private set; }
+    ChessBoard2D ChessBoard;
 
     [Header("Optional Origin")]
     public Transform BoardOrigin;
@@ -174,7 +175,7 @@ public class ChessTileManager : MonoBehaviour
 
     public void ClearHighlights()
     {
-        foreach (ChessBoardSquare square in ChessBoard.squares)
+        foreach (ChessBoardSquare square in ChessBoard.GetAllSquares())
         {
             if (square.SquareColor == ColorEnum.Light)
             {

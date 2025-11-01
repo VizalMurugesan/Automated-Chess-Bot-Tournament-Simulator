@@ -138,6 +138,7 @@ public class ChessTileManager : MonoBehaviour
             //Debug.Log($"closest square: {closestSquare.Cell}");
             chessPiece.SetDefaultSquare(closestSquare);
             chessPiece.SetCurrentSquare(closestSquare);
+            closestSquare.PlacePiece(chessPiece);
 
             assignedCount++;
         }

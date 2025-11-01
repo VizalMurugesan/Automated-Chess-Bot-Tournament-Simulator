@@ -1,4 +1,5 @@
 //(RangerD, 2025)
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ChessBoard2D
@@ -71,4 +72,48 @@ public class ChessBoard2D
             s.SetHighlight(false);
         }
     }
+
+    public  List<ChessBoardSquare> GetAllMovableSquares( ChessPiece piece)
+    {
+        List<ChessBoardSquare> movable = new List<ChessBoardSquare>();
+
+        foreach (ChessBoardSquare square in squares)
+        {
+            if (square == null) continue;
+
+            // Skip the square the piece is currently on
+            if (square == piece.CurrentSquare) continue;
+
+            movable.Add(square);
+        }
+
+        return movable;
+    }
+
+    #region
+    //IndividualPieceMovementSquares
+
+    //Rook
+    public List<ChessBoardSquare> GetRookMovableSquaresRook(ChessPiece piece)
+    {
+        List<ChessBoardSquare> movable = new List<ChessBoardSquare>();
+        int startX = piece.CurrentSquare.x;
+        int startY = piece.CurrentSquare.y;
+
+        // Horizontal and vertical moves
+        for (int x = 0; x < Manager.Instance.tileManager.BoardWidth; x++)
+        {
+            if (x != startX)
+                movable.Add(squares[x, startY]);
+        }
+        for (int y = 0; y < Manager.Instance.tileManager.BoardHeight; y++)
+        {
+            if (y != startY)
+                movable.Add(squares[startX, y]);
+        }
+
+        return movable;
+    }
+
+    #endregion
 }

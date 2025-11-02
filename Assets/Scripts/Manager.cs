@@ -7,7 +7,7 @@ public class Manager : MonoBehaviour
 
     public ChessTileManager tileManager;
 
-    //public ChessPiece DebugPiece;
+    public GameObject DebugPiece;
 
     private void Awake()
     {
@@ -39,14 +39,17 @@ public class Manager : MonoBehaviour
             Debug.Log("Tilemanager is null");
         }
 
-        //if (tileManager.ChessBoard == null)
+        if (tileManager.ChessBoard == null)
         {
             Debug.Log("ChessBoard2D is null");
         }
-        //int Count = tileManager.ChessBoard.GetRookMovableSquaresRook(DebugPiece).Count;
+        var moves = tileManager.ChessBoard.GetRookMovableSquares(DebugPiece.gameObject);
 
-        //Debug.Log($"{DebugPiece.name} has {Count} movable squares");
-        
+        foreach (var kvp in moves)
+        {
+            Debug.Log($"Square ({kvp.Key.x},{kvp.Key.y})  {kvp.Value}");
+        }
+
 
     }
 }

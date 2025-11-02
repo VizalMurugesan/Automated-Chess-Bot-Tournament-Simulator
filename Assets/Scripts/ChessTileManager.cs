@@ -17,7 +17,7 @@ public class ChessTileManager : MonoBehaviour
     public TileBase WhiteTile;
     public TileBase BlackTile;
 
-    ChessBoard2D ChessBoard;
+    public ChessBoard2D ChessBoard {  get; private set; }
 
     [Header("Optional Origin")]
     public Transform BoardOrigin;

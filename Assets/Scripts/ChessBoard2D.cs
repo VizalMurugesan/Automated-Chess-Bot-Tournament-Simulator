@@ -1,7 +1,13 @@
-//(RangerD, 2025)
+// (RangerD, 2025)
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+
+public enum ActionEnum
+{
+    MoveTo,
+    CaptureTo
+}
 
 public class ChessBoard2D
 {
@@ -28,7 +34,6 @@ public class ChessBoard2D
         return null;
     }
 
-    // Get adjacent squares (optional diagonal access)
     public ChessBoardSquare[] GetNeighbours(ChessBoardSquare square)
     {
         return new ChessBoardSquare[]
@@ -38,7 +43,7 @@ public class ChessBoard2D
             GetSquare(square.x, square.y + 1),
             GetSquare(square.x, square.y - 1),
 
-            // Diagonals if needed for certain piece moves
+            // Optional diagonals
             GetSquare(square.x + 1, square.y + 1),
             GetSquare(square.x + 1, square.y - 1),
             GetSquare(square.x - 1, square.y + 1),
@@ -46,7 +51,6 @@ public class ChessBoard2D
         };
     }
 
-    // Optional helper: find a square from world position
     public ChessBoardSquare GetClosestSquare(Vector3 worldPos)
     {
         ChessBoardSquare closest = null;
@@ -70,7 +74,6 @@ public class ChessBoard2D
         return squares;
     }
 
-    // Optional helper: clear highlights
     public void ClearHighlights()
     {
         foreach (ChessBoardSquare s in squares)
@@ -79,64 +82,85 @@ public class ChessBoard2D
         }
     }
 
-    public  List<ChessBoardSquare> GetAllMovableSquares( ChessPiece piece)
+    public List<ChessBoardSquare> GetAllMovableSquares(ChessPiece piece)
     {
         List<ChessBoardSquare> movable = new List<ChessBoardSquare>();
 
         foreach (ChessBoardSquare square in squares)
         {
             if (square == null) continue;
-
-            // Skip the square the piece is currently on
             if (square == piece.CurrentSquare) continue;
-
             movable.Add(square);
         }
 
         return movable;
     }
 
-    #region
-    //IndividualPieceMovementSquares
-
-    //Rook
-    public List<ChessBoardSquare> GetRookMovableSquaresRook(ChessPiece piece)
+    // ============================
+    // Rook movement generation
+    // ============================
+    public Dictionary<ChessBoardSquare, ActionEnum> GetRookMovableSquares(GameObject obj)
     {
-        List<ChessBoardSquare> movable = new List<ChessBoardSquare>();
+        Dictionary<ChessBoardSquare, ActionEnum> moves = new Dictionary<ChessBoardSquare, ActionEnum>();
+
+        ChessPiece piece = obj?.GetComponent<ChessPiece>();
+        if (piece == null)
+        {
+            Debug.LogError("GetRookMovableSquares called with null or invalid piece!");
+            return moves;
+        }
+
+        if (piece.CurrentSquare == null)
+        {
+            Debug.LogError($"Piece '{piece.name}' has no CurrentSquare assigned!");
+            return moves;
+        }
+
         int startX = piece.CurrentSquare.x;
         int startY = piece.CurrentSquare.y;
+        Debug.Log($"Calculating rook moves for '{piece.name}' at {startX}, {startY}");
 
-        // Horizontal and vertical moves
-        for (int x = 0; x < Manager.Instance.tileManager.BoardWidth; x++)
+        Vector2Int[] directions = new Vector2Int[]
         {
-            if (x != startX)
+            new Vector2Int(1, 0),   // right
+            new Vector2Int(-1, 0),  // left
+            new Vector2Int(0, 1),   // up
+            new Vector2Int(0, -1)   // down
+        };
+
+        foreach (var dir in directions)
+        {
+            int x = startX;
+            int y = startY;
+
+            while (true)
             {
-                ChessBoardSquare squareInConsideration = squares[x, startY];
-                if (squareInConsideration.IsOccupied)
+                x += dir.x;
+                y += dir.y;
+
+                ChessBoardSquare nextSquare = GetSquare(x, y);
+                if (nextSquare == null)
                 {
-                    movable.Add(squareInConsideration);
+                    Debug.Log($"{dir} is outtabounds");
+                    break; // Out of bounds
+                }
+
+                if (nextSquare.IsOccupied)
+                {
+                    ChessPiece occupant = nextSquare.OccupyingPiece;
+                    Debug.Log($"{dir} occupied by {occupant.name}");
+                    if (occupant != null && occupant.pieceColor != piece.pieceColor)
+                    {
+                        moves[nextSquare] = ActionEnum.CaptureTo;
+                    }
+                    // Stop regardless (rook can't jump)
                     break;
                 }
-                
-            }
-                
-        }
-        for (int y = 0; y < Manager.Instance.tileManager.BoardHeight; y++)
-        {
-            if (y != startY)
-            {
-                ChessBoardSquare squareInConsideration = squares[y, startX];
-                if (squareInConsideration.IsOccupied)
-                {
-                    movable.Add(squareInConsideration);
-                    break;
-                }
-            }
-        }
-            
 
-        return movable;
+                moves[nextSquare] = ActionEnum.MoveTo;
+            }
+        }
+
+        return moves;
     }
-
-    #endregion
 }

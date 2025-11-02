@@ -27,7 +27,7 @@ public class ChessTileManagerEditor : Editor
         if (GUILayout.Button(" Initialize Board", buttonStyle))
         {
             // Call the method
-            manager.InitializeBoard();
+            //manager.InitializeBoard();
 
             // Mark scene dirty so Unity saves the tilemap changes
             EditorUtility.SetDirty(manager);
@@ -42,7 +42,7 @@ public class ChessTileManagerEditor : Editor
         GUI.backgroundColor = new Color(0.1f, 0.7f, 0.2f);
         if (GUILayout.Button("Adjust Pieces", buttonStyle))
         {
-            manager.AdjustPieces();
+            //manager.AdjustPieces();
             EditorUtility.SetDirty(manager);
             //Debug.Log("Adjusted all chess pieces to center of grid squares!");
         }

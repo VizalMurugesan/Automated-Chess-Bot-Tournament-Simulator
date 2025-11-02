@@ -23,12 +23,12 @@ public class ChessPiece : MonoBehaviour
     public PieceType pieceType;
     public ColorEnum pieceColor;
 
-    public ChessBoardSquare DefaultSquare {  get; private set; }
+    public ChessBoardSquare DefaultSquare { get; private set; }
     public ChessBoardSquare CurrentSquare { get; private set; }
-   
+
     public ChessBoard2D chessBoard;
 
-    public Sprite _Sprite {  get; private set; }
+    public Sprite _Sprite { get; private set; }
 
     private void Awake()
     {
@@ -49,7 +49,7 @@ public class ChessPiece : MonoBehaviour
     /// Returns all potential squares the piece can move to
     /// (for now ignores occupancy and chess rules)
     /// </summary>
-   
+
 
     // <summary>
     /// Snap the piece to its default square
@@ -73,3 +73,4 @@ public class ChessPiece : MonoBehaviour
         //Debug.Log($"{gameObject.name}'s Default square has been set to {DefaultSquare.Cell}");
     }
 }
+

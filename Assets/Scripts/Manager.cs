@@ -36,12 +36,12 @@ public class Manager : MonoBehaviour
 
         if(tileManager.gameObject == null)
         {
-            Debug.Log("Tilemanager is null");
+            //Debug.Log("Tilemanager is null");
         }
 
         if (tileManager.ChessBoard == null)
         {
-            Debug.Log("ChessBoard2D is null");
+            //Debug.Log("ChessBoard2D is null");
         }
         int Count = tileManager.ChessBoard.GetRookMovableSquaresRook(DebugPiece).Count;
 

@@ -16,7 +16,7 @@ public class ChessTileManager : MonoBehaviour
     public TileBase WhiteTile;
     public TileBase BlackTile;
 
-    public ChessBoard2D ChessBoard {  get; private set; }
+    public ChessBoard2D ChessBoard { get; private set; }
 
     [Header("Optional Origin")]
     public Transform BoardOrigin;
@@ -28,7 +28,7 @@ public class ChessTileManager : MonoBehaviour
     private void Awake()
     {
         InitializeBoard();
-        
+
     }
 
     public void InitializeBoard()
@@ -103,7 +103,7 @@ public class ChessTileManager : MonoBehaviour
         foreach (var p in BlackPieces)
             SnapPiece(p);
 
-        Debug.Log($" Adjusted {adjustedCount} chess pieces to the center of their grid squares.");
+        //Debug.Log($" Adjusted {adjustedCount} chess pieces to the center of their grid squares.");
     }
 
     // Get square from world position
@@ -115,10 +115,10 @@ public class ChessTileManager : MonoBehaviour
         ChessBoardSquare square = ChessBoard.GetSquare(whiteCell.x, whiteCell.y);
         if (square == null)
             square = ChessBoard.GetSquare(blackCell.x, blackCell.y);
-
+        
         return square;
     }
-
+    
     /// <summary>
     /// Assigns DefaultSquare and CurrentSquare to all pieces based on their positions
     /// </summary>
